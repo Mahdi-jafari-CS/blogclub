@@ -1,62 +1,87 @@
 import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
+import 'package:blogclub/gen/assets.gen.dart';
+import 'package:blogclub/gen/fonts.gen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark
+  ));
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static const defaultFontFamily = 'Avenir';
+  // static const defaultFontFamily = 'Avenir';
 
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final primaryTextColor = Color(0xff0D253C);
-    final secondarTextyColor = Color(0xff2D4379);
+    const primaryTextColor = Color(0xff0D253C);
+    const secondarTextyColor = Color(0xff2D4379);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: Color.fromARGB(255, 53, 51, 51),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
-                  textStyle: WidgetStateProperty.all(TextStyle(
+                  textStyle: WidgetStateProperty.all(const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      fontFamily: defaultFontFamily)))),
+                      fontFamily: FontFamily.avenir)))),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
               headlineMedium: TextStyle(
-                  fontFamily: defaultFontFamily,
+                  fontFamily: FontFamily.avenir,
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: primaryTextColor),
               titleMedium: TextStyle(
                   fontSize: 24,
                   color: primaryTextColor,
-                  fontFamily: defaultFontFamily,
+                  fontFamily: FontFamily.avenir,
                   fontWeight: FontWeight.w700),
               titleSmall: TextStyle(
-                  fontSize: 15,
+                  fontSize: 12,
                   color: primaryTextColor,
-                  fontFamily: defaultFontFamily,
+                  fontFamily: FontFamily.avenir,
                   fontWeight: FontWeight.w400),
               bodyLarge: TextStyle(
                 fontWeight: FontWeight.w200,
                 fontSize: 18,
                 color: secondarTextyColor,
-                fontFamily: defaultFontFamily,
+                fontFamily: FontFamily.avenir,
               ),
+              bodySmall: TextStyle(
+                  fontSize: 10,
+                  color: Color(0xff7B8B82),
+                  fontFamily: FontFamily.avenir,
+                  fontWeight: FontWeight.w700),
               titleLarge: TextStyle(
-                  fontFamily: defaultFontFamily,
+                  fontFamily: FontFamily.avenir,
                   color: primaryTextColor,
                   fontWeight: FontWeight.bold))),
-      home: const HomeScreen(),
+      home: Stack(children: [
+        const Positioned.fill(
+          child: HomeScreen(),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: _BottomNavigation(),
+        )
+      ]),
     );
   }
 }
@@ -69,7 +94,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -82,29 +107,27 @@ class HomeScreen extends StatelessWidget {
                       'Hello, Janatan!',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    Image.asset(
-                      'assets/img/icons/notification.png',
-                      width: 32,
-                      height: 32,
-                    ),
+                   Assets.img.icons.notification.image(width: 32, height:32)
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(32, 0, 0, 16),
                 child: Text(
-                  "Explor Today's",
+                  "Explore Today's",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
               _StoryList(stories: stories),
-              SizedBox(height: 25),
-              _CategoryList(),
-              SizedBox(
+              const SizedBox(height: 25),
+              const _CategoryList(),
+              const SizedBox(
                 height: 32,
               ),
-              _PostList(),
-              SizedBox(height: 32,)
+              const _PostList(),
+              const SizedBox(
+                height: 68,
+              )
             ],
           ),
         ),
@@ -131,7 +154,7 @@ class _CategoryList extends StatelessWidget {
           );
         },
         options: CarouselOptions(
-            scrollPhysics: BouncingScrollPhysics(),
+            scrollPhysics: const BouncingScrollPhysics(),
             enlargeCenterPage: true,
             enlargeStrategy: CenterPageEnlargeStrategy.height,
             scrollDirection: Axis.horizontal,
@@ -282,10 +305,10 @@ class _Story extends StatelessWidget {
             Color.fromARGB(255, 20, 157, 181)
           ])),
       child: Container(
-        margin: EdgeInsets.all(2),
+        margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(22)),
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         child: _profileImage(),
       ),
     );
@@ -298,7 +321,7 @@ class _Story extends StatelessWidget {
       child: DottedBorder(
         borderType: BorderType.RRect,
         strokeWidth: 2,
-        radius: Radius.circular(24),
+        radius: const Radius.circular(24),
         color: const Color(0xff7888B2),
         dashPattern: const [8, 3],
         padding: const EdgeInsets.all(6),
@@ -323,7 +346,7 @@ class _Story extends StatelessWidget {
 }
 
 class _PostList extends StatelessWidget {
-  const _PostList({Key? key}) : super(key: key);
+  const _PostList({super.key});
   @override
   Widget build(BuildContext context) {
     final Posts = AppDatabase.posts;
@@ -340,7 +363,7 @@ class _PostList extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'More',
                   style: TextStyle(color: Color(0xff376aed)),
                 ))
@@ -348,7 +371,7 @@ class _PostList extends StatelessWidget {
         ),
       ),
       ListView.builder(
-        physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           itemCount: Posts.length,
           itemExtent: 141,
           shrinkWrap: true,
@@ -371,13 +394,13 @@ class _Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Color(0xff000000).withOpacity(0.1),
+            color: const Color(0xff000000).withOpacity(0.1),
             blurRadius: 10,
           )
         ],
@@ -390,30 +413,30 @@ class _Post extends StatelessWidget {
               'assets/img/posts/small/${post.imageFileName}',
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
                     post.caption,
-                    style: TextStyle(
-                        fontFamily: MyApp.defaultFontFamily,
+                    style: const TextStyle(
+                        fontFamily: FontFamily.avenir,
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
                         color: Color(0xff376AEd)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Text(
                     post.title,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Row(
@@ -424,14 +447,14 @@ class _Post extends StatelessWidget {
                         size: 16,
                         color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text(
                         post.likes,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Icon(
@@ -439,7 +462,7 @@ class _Post extends StatelessWidget {
                         size: 16,
                         color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text(
@@ -460,9 +483,105 @@ class _Post extends StatelessWidget {
                     ],
                   )
                 ]),
-              ))
+          ))
         ],
       ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 85,
+      child: Stack(
+        children: [
+          Positioned(
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: Container(
+                height: 65,
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                    color: Color(0xff9b487).withOpacity(0.3),
+                    blurRadius: 20,
+                  )
+                ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    BottomNavigationItem(
+                        title: 'Home',
+                        iconFileName: 'Home.png',
+                        activeIconFileName: 'Home.png'),
+                    BottomNavigationItem(
+                        title: 'Articles',
+                        iconFileName: 'Articles.png',
+                        activeIconFileName: 'Articles.png'),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    BottomNavigationItem(
+                        title: 'Search',
+                        iconFileName: 'Search.png',
+                        activeIconFileName: 'Search.png'),
+                    BottomNavigationItem(
+                        title: 'Menu',
+                        iconFileName: 'Menu.png',
+                        activeIconFileName: 'Menu.png'),
+                        
+                  ],
+                ),
+              )),
+          Center(
+            child: Container(
+              width: 65,
+              height: 85,
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 65,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 4),
+                    borderRadius: BorderRadius.circular(32.5),
+                    color: Color(0xff376AED)),
+                child: Image.asset('assets/img/icons/plus.png'),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class BottomNavigationItem extends StatelessWidget {
+  final String title;
+  final String iconFileName;
+  final String activeIconFileName;
+
+  const BottomNavigationItem({
+    Key? key,
+    required this.title,
+    required this.iconFileName,
+    required this.activeIconFileName,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/img/icons/$iconFileName'),
+        SizedBox(
+          height: 4,
+        ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodySmall,
+        )
+      ],
     );
   }
 }

@@ -37,9 +37,16 @@ dependencies:
   dotted_border: ^2.1.0
 
 dev_dependencies:
+  build_runner:
+  flutter_gen_runner:
   flutter_test:
     sdk: flutter
-
+  # flutter_gen:
+  #   output: lib/gen/ # Optional (default: lib/gen/)
+  #   line_length: 80
+  #   # Optional
+  #   integrations:
+  #   flutter_svg: true
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
